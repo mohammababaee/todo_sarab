@@ -95,15 +95,34 @@ class _MyHomePageState extends State<MyHomePage> {
         context: context,
         builder: (BuildContext context) {
           // return object of type Dialog
+          // ignore: prefer_typing_uninitialized_variables
+          var _textFieldController;
           return AlertDialog(
-            title: const Text("Alert Dialog title"),
-            content: const Text("Alert Dialog body"),
+            title: const Text("Create Task"),
+            content: TextField(
+              onChanged: (value) {},
+              controller: _textFieldController,
+              decoration: const InputDecoration(hintText: "Description"),
+            ),
             actions: <Widget>[
-              // usually buttons at the bottom of the dialog
               FlatButton(
-                child: const Text("Close"),
+                color: Colors.red,
+                textColor: Colors.white,
+                child: Text('CANCEL'),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  setState(() {
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+              FlatButton(
+                color: Colors.green,
+                textColor: Colors.white,
+                child: Text('Add'),
+                onPressed: () {
+                  setState(() {
+                    Navigator.pop(context);
+                  });
                 },
               ),
             ],
@@ -118,23 +137,23 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: SizedBox(
           child: ListView.builder(
-        itemCount: _loadedPhotos.length,
+        itemCount: 10,
         itemBuilder: (BuildContext ctx, index) {
-          return ListTile(
-            leading: Image.network(
-              _loadedPhotos[index]["thumbnailUrl"],
-              width: 150,
-              fit: BoxFit.cover,
-            ),
-            title: Text(_loadedPhotos[index]['title']),
-            subtitle:
-                Text('Description: ${_loadedPhotos[index]["description"]}'),
+          return CheckboxListTile(
+            title: const Text('Study for Exam'),
+            subtitle: const Text('From Page 23 - 64'),
+            value: timeDilation != 1.0,
+            onChanged: (bool? value) {
+              setState(() {
+                timeDilation = value! ? 2.0 : 1.0;
+              });
+            },
+            secondary: const Icon(Icons.task),
           );
         },
       )),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _fetchData();
           _showDialog();
         },
         tooltip: 'Create Task',
